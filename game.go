@@ -36,16 +36,19 @@ func main() {
 func printWorld(myworld [rows][cols]int) {
 	clearScreen()
 
+	var output string
 	for y := 0; y < rows; y++ {
 		for x := 0; x < cols; x++ {
 			if myworld[y][x] == 0 {
-				fmt.Print(" ")
+				output = output + " "
 			} else {
-				fmt.Print("X")
+				output = output + "X" 
 			}
 		}
-		fmt.Println()
+		output = output + "\n"
 	}
+
+	fmt.Print(output)
 }
 
 func clearScreen() {
