@@ -45,10 +45,9 @@ func printWorld(myworld [rows][cols]int) {
 				output = output + "X" 
 			}
 		}
-		output = output + "\n"
+		fmt.Println(output)
+		output = ""
 	}
-
-	fmt.Print(output)
 }
 
 func clearScreen() {
