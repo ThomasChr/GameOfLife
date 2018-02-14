@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"os"
-	"os/exec"
 	"time"
 )
 
@@ -35,17 +33,10 @@ func main() {
 }
 
 func printWorld(myworld [][]rune) {
-	clearScreen()
-
+	fmt.Print("\033[H\033[2J")
 	for y := 0; y < rows; y++ {
 		fmt.Println(string(myworld[y]))
 	}
-}
-
-func clearScreen() {
-	cmd := exec.Command("clear")
-	cmd.Stdout = os.Stdout
-	cmd.Run()
 }
 
 func evolveWorld(myworld [][]rune) [][]rune {
