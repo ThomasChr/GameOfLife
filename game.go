@@ -26,7 +26,7 @@ func main() {
 	for {
 		printWorld(world)
 		world = evolveWorld(world)
-		time.Sleep(time.Second / 2)
+		time.Sleep(time.Second / 4)
 	}
 }
 
