@@ -10,21 +10,19 @@ const rows int = 64
 const cols int = 128
 
 func main() {
-	var world = make([][]rune, rows)
-
+	// seed the random number generator
 	rand.Seed(time.Now().UTC().UnixNano())
 
+	// initialize world
+	var world = make([][]rune, rows)
 	for y := 0; y < rows; y++ {
 		world[y] = make([]rune, cols)
 		for x := 0; x < cols; x++ {
-			if rand.Intn(10) == 0 {
-				world[y][x] = 'X'
-			} else {
-				world[y][x] = ' '
-			}
+			world[y][x] = getRandomValue()
 		}
 	}
 
+	// let the world life
 	for {
 		printWorld(world)
 		world = evolveWorld(world)
@@ -32,8 +30,18 @@ func main() {
 	}
 }
 
+func getRandomValue() rune {
+    if rand.Intn(10) == 0 {
+        return 'X'
+    }
+
+    return ' '
+}
+
 func printWorld(myworld [][]rune) {
+	// clear screen
 	fmt.Print("\033[H\033[2J")
+
 	for y := 0; y < rows; y++ {
 		fmt.Println(string(myworld[y]))
 	}
@@ -41,38 +49,35 @@ func printWorld(myworld [][]rune) {
 
 func evolveWorld(myworld [][]rune) [][]rune {
 	var newworld = make([][]rune, rows)
-
 	for y := 0; y < rows; y++ {
 		newworld[y] = make([]rune, cols)
 		for x := 0; x < cols; x++ {
-			var neighbors = checkNeighbors(myworld, x, y)
+			var neighborCount = getNumOfNeighbors(myworld, x, y)
 			var current = myworld[y][x]
-			var newval = current
+			var newVal = current
 
-			if current == ' ' && neighbors == 3 {
-				newval = 'X'
-			} else if current == 'X' {
-				if neighbors < 2 || neighbors > 3 {
-					newval = ' '
-				}
+			if current == ' ' && neighborCount == 3 {
+				newVal = 'X'
+			} else if current == 'X' && (neighborCount < 2 || neighborCount > 3) {
+				newVal = ' '
 			}
 
-			newworld[y][x] = newval
+			newworld[y][x] = newVal
 		}
 	}
 
 	return newworld
 }
 
-func checkNeighbors(myworld [][]rune, x int, y int) int {
+func getNumOfNeighbors(myworld [][]rune, x int, y int) int {
 	var num int = 0
 
 	for i := -1; i <= 1; i++ {
 		for j := -1; j <= 1; j++ {
-			var aktx = x + i
-			var akty = y + j
+			var currentX = x + i
+			var currentY = y + j
 
-			if aktx >= 0 && aktx < cols && akty >= 0 && akty < rows && (i != 0 || j != 0) && myworld[akty][aktx] == 'X' {
+			if currentX >= 0 && currentX < cols && currentY >= 0 && currentY < rows && (i != 0 || j != 0) && myworld[currentY][currentX] == 'X' {
 				num++
 			}
 		}
